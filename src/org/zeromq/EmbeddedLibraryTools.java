@@ -19,7 +19,8 @@ public class EmbeddedLibraryTools {
 	public static final boolean LOADED_EMBEDDED_LIBRARY;
 	
 	static {
-		LOADED_EMBEDDED_LIBRARY = loadEmbeddedLibrary();
+	        loadEmbeddedLibrary("libzmq");
+		LOADED_EMBEDDED_LIBRARY = loadEmbeddedLibrary("libjzmq");
 	}
 	
 	public static String getCurrentPlatformIdentifier() {
@@ -90,7 +91,7 @@ public class EmbeddedLibraryTools {
 		}
 	}
 	
-	private static boolean loadEmbeddedLibrary() {
+	private static boolean loadEmbeddedLibrary(String libraryName) {
 
 		boolean usingEmbedded = false;
 
@@ -100,7 +101,7 @@ public class EmbeddedLibraryTools {
 		StringBuilder url = new StringBuilder();
 		url.append("/NATIVE/");
 		url.append(getCurrentPlatformIdentifier());
-		url.append("/libjzmq.");    	
+		url.append("/" + libraryName + ".");    	
 		URL nativeLibraryUrl = null;
 		// loop through extensions, stopping after finding first one
 		for (String ext : allowedExtensions) {
@@ -115,7 +116,7 @@ public class EmbeddedLibraryTools {
 
 			try {
 
-				final File libfile = File.createTempFile("libjzmq-", ".lib");
+				final File libfile = File.createTempFile(libraryName + "-", ".lib");
 				libfile.deleteOnExit(); // just in case
 
 				final InputStream in = nativeLibraryUrl.openStream();
